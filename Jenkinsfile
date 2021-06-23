@@ -67,7 +67,7 @@ pipeline {
         }
         stage ('Health Check') {
             steps {
-                sleep(10)
+                sleep(30)
                 dir('functional-test') {
                     git branch: 'main', credentialsId: 'github_login', url: 'https://github.com/rafaellbarros/tasks-functional-test'
                     sh 'mvn verify -Dskip.surefire.tests'
