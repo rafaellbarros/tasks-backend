@@ -41,6 +41,15 @@ pipeline {
                     sh 'mvn test'
                 }
             }
+        }
+        stage ('Deploy front-end') {
+            steps {
+                 dir('front-end') {
+                    git branch: 'main', credentialsId: 'github_login', url: 'https://github.com/rafaellbarros/tasks-frontend'
+                    sh 'mvn clean package -DskipTests=true'
+                    deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8001/')], contextPath: 'tasks', war: 'target/tasks.war'
+                 }
+            }
         }                      
     }
 }
