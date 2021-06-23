@@ -64,6 +64,15 @@ pipeline {
                 sh 'docker-compose build'
                 sh 'docker-compose up -d'
             }
+        }
+        stage ('Health Check') {
+            steps {
+                sleep(5)
+                dir('functional-test') {
+                    git branch: 'main', credentialsId: 'github_login', url: 'https://github.com/rafaellbarros/tasks-functional-test'
+                    sh 'mvn verify -Dskip.surefire.tests'
+                }
+            }
         }                                
     }
 }
